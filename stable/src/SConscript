@@ -1,0 +1,48 @@
+Import('env')
+
+env.Append(CPPPATH = ['include'])
+
+# Set up the environment for compiling the libraries
+libenv = env.Clone()
+libenv.Append(CPPPATH = ['lib'])
+
+# Prepare the libobj and shlibobj object files
+libobj = libenv.Object(['lib/tapcfg.c','lib/taplog.c','lib/dlpi.c'])
+if libenv['STATIC_AND_SHARED_OBJECTS_ARE_THE_SAME']:
+	shlibobj = libobj
+else:
+	shlibobj = libenv.SharedObject(['lib/tapcfg.c','lib/taplog.c'])
+
+# Compile the static library into lib directory and shared library
+# for the bindings
+libenv.Library('lib/tapcfg', libobj, install=False)
+libenv.SharedLibrary('../build/tapcfg', shlibobj, install=False)
+
+# If we want to create universal binaries of the dynamic library on Mac, do it here
+if GetOption('universal'):
+	libenv["ENV"]["MACOSX_DEPLOYMENT_TARGET"] = "10.4"
+	libenv.Append(CFLAGS = ['-arch', 'ppc', '-arch', 'i386', '-arch', 'ppc64', '-arch', 'x86_64'])
+	libenv64 = libenv.Clone()
+
+	libenv.Append(LINKFLAGS = ['-undefined', 'dynamic_lookup', '-arch', 'ppc', '-arch', 'i386', '-arch', 'ppc64', '-arch', 'x86_64'])
+
+	libenv64.Append(LINKFLAGS = ['-undefined', 'dynamic_lookup', '-arch', 'ppc64', '-arch', 'x86_64'])
+	libenv64.SharedLibrary('../build/tapcfg64', shlibobj, install=False)
+
+# Compile the .Net bindings
+if env.Detect('gmcs'):
+	asm = env.CLILibrary('../build/TAPNet', ['bindings/NativeLib.cs','bindings/VirtualDevice.cs','bindings/EthernetFrame.cs','bindings/UTF8Marshaler.cs'])
+	prog = env.CLIProgram('../build/TAPNetTest', ['demos/TAPNetTest.cs'], CILLIBS=asm)
+
+# Set up the environment for compiling the demo tests
+appenv = env.Clone()
+conf = Configure(appenv)
+conf.CheckLib('pthread')
+appenv = conf.Finish()
+appenv.Append(LIBPATH = ['lib'])
+appenv.Prepend(LIBS = ['tapcfg'])
+
+# Compile the daemon for testing
+tapserverobj = libenv.Object(['daemon/tapserver.c','daemon/serversock.c'])
+appenv.Program('../build/tapdemo', [tapserverobj,'daemon/tapdemo.c'], install=False)
+
