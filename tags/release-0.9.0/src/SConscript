@@ -22,9 +22,12 @@ libenv.SharedLibrary('../build/tapcfg', shlibobj, install=False)
 if GetOption('universal'):
 	libenv["ENV"]["MACOSX_DEPLOYMENT_TARGET"] = "10.4"
 	libenv.Append(CFLAGS = ['-arch', 'ppc', '-arch', 'i386', '-arch', 'ppc64', '-arch', 'x86_64'])
+	libenv32 = libenv.Clone()
 	libenv64 = libenv.Clone()
-
 	libenv.Append(LINKFLAGS = ['-undefined', 'dynamic_lookup', '-arch', 'ppc', '-arch', 'i386', '-arch', 'ppc64', '-arch', 'x86_64'])
+
+	libenv32.Append(LINKFLAGS = ['-undefined', 'dynamic_lookup', '-arch', 'ppc', '-arch', 'i386'])
+	libenv32.SharedLibrary('../build/tapcfg32', shlibobj, install=False)
 
 	libenv64.Append(LINKFLAGS = ['-undefined', 'dynamic_lookup', '-arch', 'ppc64', '-arch', 'x86_64'])
 	libenv64.SharedLibrary('../build/tapcfg64', shlibobj, install=False)
@@ -32,7 +35,7 @@ if GetOption('universal'):
 # Compile the .Net bindings
 if env.Detect('gmcs'):
 	asm = env.CLILibrary('../build/TAPNet', ['bindings/NativeLib.cs','bindings/VirtualDevice.cs','bindings/EthernetFrame.cs','bindings/UTF8Marshaler.cs'])
-	prog = env.CLIProgram('../build/TAPNetTest', ['demos/TAPNetTest.cs'], CILLIBS=asm)
+	prog = env.CLIProgram('../build/TAPNetTest', ['demos/TAPNetTest.cs'], CILLIBS=[asm, 'System'])
 
 # Set up the environment for compiling the demo tests
 appenv = env.Clone()
@@ -45,4 +48,5 @@ appenv.Prepend(LIBS = ['tapcfg'])
 # Compile the daemon for testing
 tapserverobj = libenv.Object(['daemon/tapserver.c','daemon/serversock.c'])
 appenv.Program('../build/tapdemo', [tapserverobj,'daemon/tapdemo.c'], install=False)
+appenv.Program('../build/tapcfgd', [tapserverobj,'daemon/client.c','daemon/daemon.c','daemon/main.c'], install=False)
 

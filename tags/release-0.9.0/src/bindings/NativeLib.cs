@@ -1,3 +1,17 @@
+/**
+ *  tapcfg - A cross-platform configuration utility for TAP driver
+ *  Copyright (C) 2008-2009  Juho Vähä-Herttua
+ *
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2.1 of the License, or (at your option) any later version.
+ *
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
+ */
 
 using System;
 using System.Runtime.InteropServices;
@@ -103,53 +117,53 @@ namespace TAPNet {
 				return tapcfg_iface_set_dhcp_options(tapcfg, buffer, buflen);
 			}
 
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern void tapcfg_set_log_callback(IntPtr tapcfg, TAPLogCallback cb);
 
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern IntPtr tapcfg_init();
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern void tapcfg_destroy(IntPtr tapcfg);
 
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern int tapcfg_start(IntPtr tapcfg,
 				[MarshalAs(UnmanagedType.CustomMarshaler,
 					   MarshalTypeRef = typeof(UTF8Marshaler))]
 				string ifname, int fallback);
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern void tapcfg_stop(IntPtr tapcfg);
 
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern int tapcfg_wait_readable(IntPtr tapcfg, int msec);
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern int tapcfg_wait_writable(IntPtr tapcfg, int msec);
 
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern int tapcfg_read(IntPtr tapcfg, byte[] buf, int count);
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern int tapcfg_write(IntPtr tapcfg, byte[] buf, int count);
 
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			[return : MarshalAs(UnmanagedType.CustomMarshaler,
 					    MarshalTypeRef = typeof(UTF8Marshaler))]
 			private static extern string tapcfg_get_ifname(IntPtr tapcfg);
 
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern IntPtr tapcfg_iface_get_hwaddr(IntPtr tapcfg, IntPtr length);
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern int tapcfg_iface_set_hwaddr(IntPtr tapcfg, byte[] hwaddr, int length);
 
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern int tapcfg_iface_get_status(IntPtr tapcfg);
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern int tapcfg_iface_change_status(IntPtr tapcfg, int flags);
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern int tapcfg_iface_get_mtu(IntPtr tapcfg);
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern int tapcfg_iface_set_mtu(IntPtr tapcfg, int mtu);
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern int tapcfg_iface_set_ipv4(IntPtr tapcfg, string addr, byte netbits);
-			[DllImport("tapcfg")]
+			[DllImport("tapcfg32")]
 			private static extern int tapcfg_iface_set_dhcp_options(IntPtr tapcfg, byte[] buffer, int buflen);
 		}
 
