@@ -1,6 +1,6 @@
 /**
  *  tapcfg - A cross-platform configuration utility for TAP driver
- *  Copyright (C) 2008-2011  Juho Vähä-Herttua
+ *  Copyright (C) 2008-2010  Juho Vähä-Herttua
  *
  *  This library is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Lesser General Public
@@ -502,19 +502,7 @@ tapcfg_iface_set_ipv4(tapcfg_t *tapcfg, const char *addrstr, unsigned char netbi
 }
 
 int
-tapcfg_iface_set_ipv6(tapcfg_t *tapcfg, const char *addrstr, unsigned char netbits)
-{
-	return -1;
-}
-
-int
 tapcfg_iface_set_dhcp_options(tapcfg_t *tapcfg, unsigned char *buffer, int buflen)
-{
-	return -1;
-}
-
-int
-tapcfg_iface_set_dhcpv6_options(tapcfg_t *tapcfg, unsigned char *buffer, int buflen)
 {
 	return -1;
 }
