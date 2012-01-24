@@ -1,6 +1,10 @@
 #ifndef TAPCFG_H
 #define TAPCFG_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* On Windows we explicitly only export the API symbols */
 #if defined(_WIN32) && defined(DLL_EXPORT)
 # define TAPCFG_API __declspec(dllexport)
@@ -269,6 +273,10 @@ TAPCFG_API int tapcfg_iface_set_ipv4(tapcfg_t *tapcfg, const char *addr, unsigne
  * @return Negative value if an error happened, non-negative otherwise.
  */
 TAPCFG_API int tapcfg_iface_set_dhcp_options(tapcfg_t *tapcfg, unsigned char *buffer, int buflen);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* TAPCFG_H */
 
