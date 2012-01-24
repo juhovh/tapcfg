@@ -123,13 +123,13 @@ tapcfg_start(tapcfg_t *tapcfg, const char *ifname, int fallback)
 	free(adapterid);
 
 	taplog_log(&tapcfg->taplog, TAPLOG_DEBUG, "Trying %s", tapname);
-	dev_handle = CreateFile(tapname,
-				GENERIC_WRITE | GENERIC_READ,
-				0, /* ShareMode, don't let others open the device */
-				0, /* SecurityAttributes */
-				OPEN_EXISTING,
-				FILE_ATTRIBUTE_SYSTEM | FILE_FLAG_OVERLAPPED,
-				0); /* TemplateFile */
+	dev_handle = CreateFileA(tapname,
+				 GENERIC_WRITE | GENERIC_READ,
+				 0, /* ShareMode, don't let others open the device */
+				 0, /* SecurityAttributes */
+				 OPEN_EXISTING,
+				 FILE_ATTRIBUTE_SYSTEM | FILE_FLAG_OVERLAPPED,
+				 0); /* TemplateFile */
 
 	if (dev_handle != INVALID_HANDLE_VALUE) {
 		unsigned long info[3];
