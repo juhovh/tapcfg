@@ -25,13 +25,13 @@ libenv.SharedLibrary('tapcfg', shlibobj, install=False)
 
 # If we want to create universal binaries of the dynamic library on Mac, do it here
 if GetOption('universal'):
-	libenv["ENV"]["MACOSX_DEPLOYMENT_TARGET"] = "10.4"
-	libenv.Append(CFLAGS = ['-arch', 'ppc', '-arch', 'i386', '-arch', 'x86_64'])
+	libenv["ENV"]["MACOSX_DEPLOYMENT_TARGET"] = "10.5"
+	libenv.Append(CFLAGS = ['-arch', 'i386', '-arch', 'x86_64'])
 	libenv32 = libenv.Clone()
 	libenv64 = libenv.Clone()
 
 	libenv32.Append(LINKFLAGS = ['-undefined', 'dynamic_lookup'])
-	libenv32.Append(LINKFLAGS = ['-arch', 'ppc', '-arch', 'i386'])
+	libenv32.Append(LINKFLAGS = ['-arch', 'i386'])
 	libenv32.Append(LINKFLAGS = ['-install_name', 'libtapcfg32.dylib'])
 	libenv32.SharedLibrary('tapcfg32', shlibobj, install=False)
 
@@ -41,7 +41,7 @@ if GetOption('universal'):
 	libenv64.SharedLibrary('tapcfg64', shlibobj, install=False)
 
 	libenv.Append(LINKFLAGS = ['-undefined', 'dynamic_lookup'])
-	libenv.Append(LINKFLAGS = ['-arch', 'ppc', '-arch', 'i386', '-arch', 'x86_64'])
+	libenv.Append(LINKFLAGS = ['-arch', 'i386', '-arch', 'x86_64'])
 	libenv.Append(LINKFLAGS = ['-install_name', 'libtapcfg.dylib'])
 
 # Compile the .Net bindings
