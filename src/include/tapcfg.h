@@ -93,9 +93,9 @@ TAPCFG_API void tapcfg_destroy(tapcfg_t *tapcfg);
  * interface name is not available, will fallback to using
  * the system default.
  * @param tapcfg is a pointer to an inited structure
- * @param ifname is a pointer to the suggested name for 
- *        the device in question in UTF-8 encoding, can be
- *        null for system default
+ * @param ifname is a pointer to the suggested name (can be
+ *        also GUID on Windows) for the device in question
+ *        in UTF-8 encoding, can be null for system default
  * @param fallback is a flag, if it is set and the defined
  *        interface name is not available, other available
  *        TAP interfaces are searched and used accordingly
