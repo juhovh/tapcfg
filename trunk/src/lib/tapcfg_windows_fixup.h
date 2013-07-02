@@ -113,9 +113,8 @@ get_tap_reg(taplog_t *taplog)
 			if (status == ERROR_SUCCESS && data_type == REG_SZ) {
 				/* The component ID is usually tap0801 or tap0901
 				 * depending on the version, for convenience we
-				 * accept all tapXXXX components */
-				if (strlen(component_id) == 7 &&
-				    !strncmp(component_id, "tap", 3)) {
+				 * accept all components starting with "tap" */
+				if (!strncmp(component_id, "tap", 3)) {
 					struct tap_reg *reg;
 
 					reg = calloc(1, sizeof(struct tap_reg));
@@ -295,7 +294,8 @@ tapcfg_fixup_adapters(taplog_t *taplog, const char *ifname,
 					adapter = pr;
 				}
 
-				if (!strcasecmp(ifname, pr->name)) {
+				/* Match either to the adapter name or adapter GUID */
+				if (!strcmp(ifname, pr->name) || !strcmp(ifname, pr->guid)) {
 					found++;
 				}
 			}
